@@ -4,10 +4,11 @@ from flask import Flask,request ,render_template
 import os
 import datetime
 import time
+import json
 
 # 212 tracking API Key AIzaSyBW33L4Qzpx6nAzfa5DOFd1T-uChYxjHyE
 
-dataPoints=deque()
+dataPoints = deque()
 
 def time_min(sec):
 	return datetime.datetime.fromtimestamp(sec).strftime('%Y-%m-%d %H:%M:%S')
@@ -17,15 +18,15 @@ app=Flask(__name__)
 @app.route("/", methods=['GET','POST'])
 def main():
 	if request.method=='GET':
-		return render_template('map.html',dataPoints=dataPoints)
+		return render_template('map.html',dataPoints=dataPoints,dataPointsJson=json.dumps(dataPoints))
 		
 @app.route("/data", methods=['GET','POST'])
 def data():	
 	if request.method=='GET':
 
-		# data = request.get_json(force=True)	
+		# data = request.get_json(force=True)
 		# print data
-		id_bus=request.args.get('uid')
+		id_bus = request.args.get('uid')
 		print id_bus
 		lati = float(request.args.get('latitude'))
 		print lati

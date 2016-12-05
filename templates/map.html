@@ -42,17 +42,37 @@
 			font-size: 1.3vw;
 			color: #aca89a;
 			"> 
-			212 Tracking Project </span></h1>	
+			212 Tracking Project </span></h1>
+
+		<select onchange="initMapID()" id="bus_list"></select>
 
 		<div id="map"></div>
+
+
 		<script>
+
+			//loads bus ids dynamically into dropdown
+			function fetchDataPoints() {
+				var dataPoints = {{dataPointsJson}};
+				var bus_list = document.getElementById("bus_list");
+				var len=dataPoints.length;
+
+				//populating select with all bus with resp. ids as values
+				for(i=0,i<len;++i) {
+					var option = document.createElement("option");
+					option.text = "Bus "+(i+1);
+					option.value = dataPoints[i][0]; //option value = bus_id
+					bus_list.add(option);
+				}	
+			}
+			fetchDataPoints();
 
 			function initMap() {
 				var myLatLng = {lat: 17.4977899, lng: 78.5056246 };
 
 				var pos1 = {lat: {{dataPoints[0][1]}} , lng:  {{dataPoints[0][2]}} };
-				var pos2 = {lat: {{dataPoints[1][1]}}, lng: {{dataPoints[1][1]}} };
-				var pos3 = {lat: {{dataPoints[2][1]}}, lng: {{dataPoints[2][1]}} };
+				var pos2 = {lat: {{dataPoints[1][1]}}, lng: {{dataPoints[1][2]}} };
+				var pos3 = {lat: {{dataPoints[2][1]}}, lng: {{dataPoints[2][2]}} };
 
 				var map = new google.maps.Map(document.getElementById('map'), {
 					zoom: 13,
@@ -90,8 +110,7 @@
 				});
 			}
 		</script>
-		<script async defer
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBW33L4Qzpx6nAzfa5DOFd1T-uChYxjHyE&callback=initMap">
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBW33L4Qzpx6nAzfa5DOFd1T-uChYxjHyE&callback=initMapID">
 		</script>
 	</body>
 </html>
