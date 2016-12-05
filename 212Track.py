@@ -9,6 +9,7 @@ import json
 # 212 tracking API Key AIzaSyBW33L4Qzpx6nAzfa5DOFd1T-uChYxjHyE
 
 dataPoints = deque()
+dataPointsById = {}
 
 def time_min(sec):
 	return datetime.datetime.fromtimestamp(sec).strftime('%Y-%m-%d %H:%M:%S')
@@ -18,8 +19,8 @@ app=Flask(__name__)
 @app.route("/", methods=['GET','POST'])
 def main():
 	if request.method=='GET':
-		return render_template('map.html',dataPoints=dataPoints,dataPointsJson=json.dumps(dataPoints))
-		
+		return render_template('map.html',dataPoints=dataPointsById,dataPointsJson=json.dumps(dataPointsById))
+
 @app.route("/data", methods=['GET','POST'])
 def data():	
 	if request.method=='GET':
@@ -35,12 +36,16 @@ def data():
 		time = int(request.args.get('time'))
 		time = time_min(time)
 		print time
-	
+		
+		#lati,longi,time goes to resp. id_bus deque
 		if (id_bus and lati and longi and time):
-			dataPoints.append((id_bus,lati,longi,time))
-			if len(dataPoints) > 3:
-				dataPoints.popleft()
-			print dataPoints
+			if id_bus not in dataPointsById:
+				dataPointsById[id_bus] = deque()
+			dataPointsById[id_bus].append(lati,longi,time)
+
+			if len(dataPointsById[id_bus]) > 3:
+				dataPointsById[id_bus].popleft()
+			print dataPointsById[id_bus]
 
 		return ("recieved data")
 		
