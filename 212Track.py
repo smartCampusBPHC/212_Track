@@ -8,6 +8,9 @@ import time
 # 212 tracking API Key AIzaSyBW33L4Qzpx6nAzfa5DOFd1T-uChYxjHyE
 
 dataPoints=deque()
+dataPoints.append((1,17.4977899,78.5056246,None))
+dataPoints.append((1,17.4977899,78.5056246,None))
+dataPoints.append((1,17.4977899,78.5056246,None))
 
 def time_min(sec):
 	return datetime.datetime.fromtimestamp(sec).strftime('%Y-%m-%d %H:%M:%S')
@@ -45,6 +48,6 @@ def data():
 		
 		
 
-port = int(os.getenv('VCAP_APP_PORT', 8080))
+port = int(os.getenv('VCAP_APP_PORT', 80))
 if __name__=='__main__':
 	app.run(host='0.0.0.0', port=port, debug=True)
